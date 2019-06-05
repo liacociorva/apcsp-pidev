@@ -1,7 +1,7 @@
 #include <stdio.h>
 void printScore(int*);
 void compareArrays(int*, int*, int*);
-
+void readGuessCode (int*);
 
 int main(void) 
 {
@@ -18,7 +18,7 @@ int main(void)
   guessCode[2]=9;
   guessCode[3]=2;
   guessCode[4]=7;
-  printScore(&score[0]);
+  readGuessCode(guessCode);
   compareArrays(secretCode, guessCode, score);
   printScore(&score[0]);
   return 0;
@@ -55,9 +55,30 @@ void compareArrays (int* inputArray1, int* inputArray2, int* scoreArray)
   int countMisses = countOverall - countMatch;
 
   scoreArray[1]=countMisses;
-  
 }
 
+void readGuessCode(int* inputArray)
+{
+  char input[256];
+  int userInput;
 
+  while (1)
+  {
+    printf ("Please input a 5 digit guess code: ");
+    fgets(input, 256, stdin);
+    if (sscanf(input, "%d", &userInput) == 1) break;
+    printf("Not a valid number - try again!\n");
+  }
+  printf("You entered the number %d\n", userInput);
+  inputArray[0] = userInput/10000;
+  userInput = userInput - inputArray[0]*10000;
+  inputArray[1] = userInput/1000;
+  userInput = userInput - inputArray[1]*1000;
+  inputArray[2] = userInput/100;
+  userInput = userInput - inputArray[2]*100;
+  inputArray[3] = userInput/10;
+  userInput = userInput - inputArray[3]*10;
+  inputArray[4] = userInput;
+  printf ("Your code is: %d-%d-%d-%d-%d\n", inputArray[0], inputArray[1], inputArray[2], inputArray[3], inputArray[4]);
 
-
+}
