@@ -1,13 +1,14 @@
 #include <stdio.h>
 void printScore(int*);
 void compareArrays(int*, int*, int*);
-void readGuessCode (int*);
+int readGuessCode (int*);
 
 int main(void) 
 {
   int score[2];
   int secretCode[5];
   int guessCode[5];
+  int errorCode = 1;
   secretCode[0]=1;
   secretCode[1]=3;
   secretCode[2]=7;
@@ -18,7 +19,10 @@ int main(void)
   guessCode[2]=9;
   guessCode[3]=2;
   guessCode[4]=7;
-  readGuessCode(guessCode);
+  while (errorCode == 1)
+  {
+    errorCode = readGuessCode(guessCode);
+  }
   compareArrays(secretCode, guessCode, score);
   printScore(&score[0]);
   return 0;
@@ -57,7 +61,7 @@ void compareArrays (int* inputArray1, int* inputArray2, int* scoreArray)
   scoreArray[1]=countMisses;
 }
 
-void readGuessCode(int* inputArray)
+int readGuessCode(int* inputArray)
 {
   char input[256];
   int userInput;
@@ -80,5 +84,24 @@ void readGuessCode(int* inputArray)
   userInput = userInput - inputArray[3]*10;
   inputArray[4] = userInput;
   printf ("Your code is: %d-%d-%d-%d-%d\n", inputArray[0], inputArray[1], inputArray[2], inputArray[3], inputArray[4]);
-
+  for (int index=0; index<5; index++)
+  {
+    if (inputArray[index] < 0 || inputArray[index] > 9)
+    {
+      printf("The number %d is not a legal digit\n", inputArray[index]);
+      return 1;
+    }
+  }
+  for (int index1=0; index1<5; index1++)
+  {
+    for (int index2=index1+1; index2<5; index2++)
+    {
+      if (inputArray[index1] == inputArray[index2])
+      {
+        printf("The number %d appears too many times\n", inputArray[index1]);
+        return 1;
+      }
+    }
+  }
+  return 0;
 }
