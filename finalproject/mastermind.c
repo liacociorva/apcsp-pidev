@@ -14,11 +14,7 @@ int main(void)
   secretCode[2]=7;
   secretCode[3]=2;
   secretCode[4]=9;
-  guessCode[0]=1;
-  guessCode[1]=0;
-  guessCode[2]=9;
-  guessCode[3]=2;
-  guessCode[4]=7;
+  
   while (errorCode == 1)
   {
     errorCode = readGuessCode(guessCode);
