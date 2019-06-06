@@ -1,26 +1,54 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 void printScore(int*);
 void compareArrays(int*, int*, int*);
 int readGuessCode (int*);
+int checkDuplicates (int*);
+void createAllCodes (int*); 
 
 int main(void) 
 {
-  int score[2];
+  int totalValidCodes = 30241;
+  int score[2] = {0,0};
   int secretCode[5];
   int guessCode[5];
+  int allCodes[totalValidCodes][5];
   int errorCode = 1;
-  secretCode[0]=1;
-  secretCode[1]=3;
-  secretCode[2]=7;
-  secretCode[3]=2;
-  secretCode[4]=9;
-  
-  while (errorCode == 1)
+  int tryCount = 0;
+
+  createAllCodes(&allCodes[0][0]);
+  srand(time(NULL));
+  int randomCode = rand() % totalValidCodes;
+
+  for (int index = 0; index < 5; index++)
   {
-    errorCode = readGuessCode(guessCode);
+    secretCode[index]=allCodes[randomCode][index];
   }
-  compareArrays(secretCode, guessCode, score);
-  printScore(&score[0]);
+  printf ("Secret code is: %d-%d-%d-%d-%d\n", secretCode[0], secretCode[1], secretCode[2], secretCode[3], secretCode[4]);
+
+
+  while (score[0] != 5 && tryCount<20)
+  {
+    errorCode = 1;
+    while (errorCode == 1)
+    {
+      errorCode = readGuessCode(guessCode);
+    }
+    compareArrays(secretCode, guessCode, score);
+    printScore(&score[0]);
+    tryCount++;
+    printf ("You tried %d times.\n", tryCount);
+  }
+  if (score[0]==5)
+  {
+    printf("You cracked the code in %d tries!\n", tryCount);
+  }
+  else 
+  {
+    printf("You failed to crack the code in under 20 tries. \n");
+  }
   return 0;
 }
 
@@ -100,4 +128,58 @@ int readGuessCode(int* inputArray)
     }
   }
   return 0;
+}
+
+int checkDuplicates (int* inputArray)
+{
+ for (int index1=0; index1<5; index1++)
+  {
+    for (int index2=index1+1; index2<5; index2++)
+    {
+      if (inputArray[index1] == inputArray[index2])
+      {
+        return 1;
+      }
+    }
+  }
+  return 0;
+} 
+
+void createAllCodes (int* arrayList)
+{
+int count = 0;
+int tempArray[5];
+
+  for (int index0=0; index0<10; index0++)
+  {
+    for (int index1=0; index1<10; index1++)
+    {
+      for (int index2=0; index2<10; index2++)
+      {
+        for (int index3=0; index3<10; index3++)
+        {
+          for (int index4=0; index4<10; index4++)
+          {
+            tempArray[0] = index0;
+            tempArray[1] = index1;
+            tempArray[2] = index2;
+            tempArray[3] = index3;
+            tempArray[4] = index4;
+            int check = checkDuplicates(tempArray);
+            if (check == 0)
+            {
+              arrayList[5*count+0] = tempArray[0];
+              arrayList[5*count+1] = tempArray[1];
+              arrayList[5*count+2] = tempArray[2];
+              arrayList[5*count+3] = tempArray[3];
+              arrayList[5*count+4] = tempArray[4];
+              count++;
+            // printf("%d  -  %d-%d-%d-%d-%d\n", count, index0, index1, index2, index3, index4);
+            }
+          }
+        }
+      }
+    }
+  }
+
 }
