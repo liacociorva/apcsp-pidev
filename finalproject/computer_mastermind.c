@@ -4,6 +4,8 @@
 
 int computerGame (int);
 
+//Main program for the computer version of Mastermind. Can be called from website, as it is not interactive. The function computerGame is called.
+
 int main(int argc, char* argv[])
 {
   if (argc != 2)

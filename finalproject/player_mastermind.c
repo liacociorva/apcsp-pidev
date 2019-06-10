@@ -2,13 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-void printScore (int*);
-void compareArrays (int*, int*, int*);
-int readCode (int*, int);
-int checkDuplicates (int*);
-void createCodes (int*); 
 int playerGame (void);
 
+// Main program for the player version of Mastermind. The function playerGame is called. 
 int main(void)
 {
   int errorCode = playerGame();
